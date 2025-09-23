@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-architecture.jpg";
-import "@fontsource/italianno"; // defaults to weight 400
+import "@fontsource/cinzel";
 
 const HeroSection = () => {
   return (
@@ -34,13 +34,13 @@ const HeroSection = () => {
         <div className="mb-6">
           <h1
             className="text-6xl md:text-8xl font-light text-luxury-gold mb-2"
-            style={{ fontFamily: "'Italianno', cursive" }}
+            style={{ fontFamily: "'Cinzel', serif" }}
           >
             Luxury & Comfort
           </h1>
 
-          <h2 className="text-4xl md:text-6xl font-bold text-luxury-text tracking-tight">
-            Passionate Living Spaces
+          <h2 className="text-4xl md:text-6xl font-light text-luxury-text tracking-widest uppercase" style={{ fontFamily: "'Cinzel', serif" }}>
+            Passionate Living Spaces |
           </h2>
         </div>
 
