@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 const reviews = [
     {
@@ -51,14 +51,57 @@ const reviews = [
 
 const ClientReviews = () => {
     const [selectedReview, setSelectedReview] = useState<number | null>(null);
+    const [isPaused, setIsPaused] = useState(false);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [centeringOffset, setCenteringOffset] = useState<number | null>(null);
+    const [pausedTranslateX, setPausedTranslateX] = useState<number | null>(null);
     const duplicatedReviews = [...reviews, ...reviews, ...reviews, ...reviews];
 
-    const handleReviewClick = (index: number) => {
+    const handleReviewClick = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
+        e.stopPropagation();
+        const isCurrentlySelected = selectedReview !== null && selectedReview % reviews.length === index % reviews.length;
+
+        if (isCurrentlySelected) {
+            handleCloseReview();
+            return;
+        }
+
+        setIsPaused(true);
+
+        const scrollContainer = scrollContainerRef.current;
+        if (scrollContainer) {
+            if (pausedTranslateX === null) {
+                const style = window.getComputedStyle(scrollContainer);
+                const matrix = new DOMMatrixReadOnly(style.transform);
+                const currentTranslateX = matrix.m41;
+                setPausedTranslateX(currentTranslateX);
+            }
+
+            const element = e.currentTarget;
+            const parentRect = scrollContainer.parentElement!.getBoundingClientRect();
+            const elementRect = element.getBoundingClientRect();
+
+            const elementCenter = elementRect.left + elementRect.width / 2;
+            const parentCenter = parentRect.left + parentRect.width / 2;
+            const offsetToCenter = parentCenter - elementCenter;
+
+            const currentOffset = centeringOffset ?? pausedTranslateX ?? 0;
+            const newTranslateX = currentOffset + offsetToCenter;
+
+            setCenteringOffset(newTranslateX);
+        }
         setSelectedReview(index);
     };
 
     const handleCloseReview = () => {
         setSelectedReview(null);
+        setCenteringOffset(pausedTranslateX);
+
+        setTimeout(() => {
+            setCenteringOffset(null);
+            setPausedTranslateX(null);
+            setIsPaused(false);
+        }, 500);
     };
 
     return (
@@ -74,24 +117,28 @@ const ClientReviews = () => {
                         What Our Clients Say About Us
                     </h2>
                 </div>
-                <div className="relative w-full overflow-hidden" onClick={handleCloseReview}>
-                    <div className={`absolute left-0 top-0 bottom-0 w-64 bg-gradient-to-r from-luxury-dark-secondary to-transparent z-10 pointer-events-none ${selectedReview !== null ? 'hidden' : ''}`}></div>
-                    <div className={`flex w-max ${selectedReview === null ? 'animate-scroll' : ''}`}>
+                <div className="relative w-full overflow-hidden" onClick={selectedReview !== null ? handleCloseReview : undefined}>
+                    <div className={`absolute left-0 top-0 bottom-0 w-16 md:w-64 bg-gradient-to-r from-luxury-dark-secondary to-transparent z-10 pointer-events-none ${selectedReview !== null ? 'hidden' : ''}`}></div>
+                    <div
+                        ref={scrollContainerRef}
+                        className={`flex w-max animate-scroll ${isPaused ? 'animation-paused' : ''}`}
+                        style={centeringOffset !== null ? { transform: `translateX(${centeringOffset}px)`, transition: 'transform 0.5s ease-in-out' } : (pausedTranslateX !== null ? { transform: `translateX(${pausedTranslateX}px)` } : {})}
+                    >
                         {duplicatedReviews.map((review, index) => (
-                            <div key={index} 
-                                 className={`flex-shrink-0 w-96 mx-4 transform transition-transform duration-500 ${selectedReview !== null ? (selectedReview % reviews.length === index % reviews.length ? 'scale-125 z-20' : 'scale-75 blur-sm') : ''}`}
-                                 onClick={(e) => { e.stopPropagation(); handleReviewClick(index); }}>
-                                <div className="bg-luxury-dark p-8 rounded-2xl border border-luxury-gold/20 shadow-royal aspect-square flex flex-col justify-center items-center">
+                            <div key={index}
+                                 className={`flex-shrink-0 w-80 md:w-96 mx-2 md:mx-4 transform transition-transform duration-500 ${selectedReview !== null ? (selectedReview % reviews.length === index % reviews.length ? 'scale-110 md:scale-125 z-20' : 'scale-75 blur-sm') : ''}`}
+                                 onClick={(e) => handleReviewClick(e, index)}>
+                                <div className="bg-luxury-dark p-6 md:p-8 rounded-2xl border border-luxury-gold/20 shadow-royal aspect-square flex flex-col justify-center items-center">
                                     <div className="text-center">
-                                        <p className="text-luxury-text-muted italic text-lg mb-6">\"{review.quote}\"</p>
-                                        <p className="font-algerian text-luxury-gold text-xl">{review.name}</p>
-                                        <p className="text-luxury-text-muted text-sm">{review.title}</p>
+                                        <p className="text-luxury-text-muted italic text-base md:text-lg mb-4 md:mb-6">\"{review.quote}\"</p>
+                                        <p className="font-algerian text-luxury-gold text-lg md:text-xl">{review.name}</p>
+                                        <p className="text-luxury-text-muted text-xs md:text-sm">{review.title}</p>
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
-                    <div className={`absolute right-0 top-0 bottom-0 w-64 bg-gradient-to-l from-luxury-dark-secondary to-transparent z-10 pointer-events-none ${selectedReview !== null ? 'hidden' : ''}`}></div>
+                    <div className={`absolute right-0 top-0 bottom-0 w-16 md:w-64 bg-gradient-to-l from-luxury-dark-secondary to-transparent z-10 pointer-events-none ${selectedReview !== null ? 'hidden' : ''}`}></div>
                 </div>
             </div>
         </section>
