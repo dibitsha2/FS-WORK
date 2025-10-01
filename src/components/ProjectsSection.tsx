@@ -1,3 +1,6 @@
+"use client";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 import { Button } from "@/components/ui/button";
 import luxuryVilla from "@/assets/luxury-villa.jpg";
 import corporateLuxury from "@/assets/corporate-luxury.jpg";
@@ -36,29 +39,68 @@ const ProjectsSection = () => {
     }
   ];
 
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 10,
+      },
+    },
+  };
+
   return (
-    <section id="projects" className="py-24 bg-luxury-dark-secondary">
+    <section id="projects" className="py-24 bg-luxury-dark-secondary font-algerian" ref={ref}>
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
           <span className="text-luxury-gold text-sm font-light tracking-widest uppercase mb-4 block">
             Featured Projects
           </span>
-          <h2 className="text-4xl md:text-5xl font-light text-luxury-text mb-6">
+          <h2 className="text-4xl md:text-5xl text-luxury-text mb-6 font-algerian">
             Our Recent Work
           </h2>
           <p className="text-luxury-text-muted text-lg max-w-2xl mx-auto">
             Explore our portfolio of exceptional architectural and design projects 
             that showcase our commitment to luxury and innovation.
           </p>
-        </div>
+        </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate={inView ? "visible" : ""}
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {projects.map((project, index) => (
-            <div 
+            <motion.div 
               key={index}
-              className="group relative overflow-hidden rounded-lg shadow-luxury hover:shadow-glow transition-all duration-500 transform hover:scale-[1.02]"
+              variants={itemVariants}
+              className="group relative overflow-hidden shadow-luxury hover:shadow-glow transition-all duration-500 transform hover:scale-[1.02]"
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img 
@@ -94,9 +136,9 @@ const ProjectsSection = () => {
                   </svg>
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
         {/* View All Button */}
         <div className="text-center">

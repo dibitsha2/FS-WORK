@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +16,11 @@ const ContactSection = () => {
     message: ''
   });
 
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
@@ -20,32 +28,42 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-32 bg-luxury-dark relative overflow-hidden">
+    <section id="contact" className="py-32 bg-luxury-dark relative overflow-hidden font-algerian" ref={ref}>
       {/* Background elements */}
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-luxury-dark via-luxury-dark to-luxury-dark-secondary"></div>
       <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-royal opacity-5 rounded-full blur-3xl"></div>
       
       <div className="container mx-auto px-6 relative z-10">
         {/* Header */}
-        <div className="text-center mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-20"
+        >
           <span className="text-luxury-gold text-sm font-light tracking-[0.3em] uppercase mb-6 flex items-center justify-center">
             <div className="w-12 h-0.5 bg-luxury-gold mr-4"></div>
             Royal Consultation
             <div className="w-12 h-0.5 bg-luxury-gold ml-4"></div>
           </span>
-          <h2 className="text-5xl md:text-6xl font-light text-luxury-text mb-8">
+          <h2 className="text-5xl md:text-6xl font-algerian text-luxury-text mb-8">
             Begin Your <span className="text-luxury-gold font-serif italic">Luxury</span> Journey
           </h2>
           <p className="text-luxury-text-muted text-xl max-w-3xl mx-auto leading-relaxed">
             Transform your vision into architectural masterpiece. Let's create something extraordinary together.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           {/* Left Content */}
-          <div className="space-y-12">
+          <motion.div
+            initial={{ opacity: 0, x: -50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="space-y-12"
+          >
             <div>
-              <h3 className="text-3xl font-light text-luxury-text mb-8">Why Choose Royal Excellence?</h3>
+              <h3 className="text-3xl font-algerian text-luxury-text mb-8">Why Choose Royal Excellence?</h3>
               <div className="space-y-6">
                 {[
                   { icon: "👑", title: "Royal Treatment", desc: "White-glove service from consultation to completion" },
@@ -85,11 +103,16 @@ const ContactSection = () => {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
           
           {/* Right Form */}
-          <div className="bg-luxury-dark-secondary p-10 rounded-2xl shadow-luxury border border-luxury-gold/10">
-            <h3 className="text-2xl font-light text-luxury-text mb-8">Request Royal Consultation</h3>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="bg-luxury-dark-secondary p-10 rounded-2xl shadow-luxury border border-luxury-gold/10"
+          >
+            <h3 className="text-2xl font-algerian text-luxury-text mb-8">Request Royal Consultation</h3>
             
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -184,7 +207,7 @@ const ContactSection = () => {
                 * Required fields. We'll respond within 24 hours with your personalized consultation proposal.
               </p>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -18,9 +18,17 @@ export default {
 			}
 		},
 		extend: {
+			fontSize: {
+				DEFAULT: '24px'
+			},
 			fontFamily: {
     			italianno: ["Italianno", "cursive"],
-  			},
+				"freestyle-script": ["Freestyle Script", "cursive"],
+				centaur: ["Centaur", "serif"],
+				calibri: ["Calibri", "sans-serif"],
+				algerian: ["Algerian", "serif"],
+  				"lucida-calligraphy": ["Lucida Calligraphy", "cursive"],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -75,9 +83,7 @@ export default {
 				}
 			},
 			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				lg: 'var(--radius)'
 			},
 			keyframes: {
 				'accordion-down': {
@@ -95,13 +101,18 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+        'scroll': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-100%)' },
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+        'scroll': 'scroll 492s linear infinite',
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [require("tailwindcss-animate")]
 } satisfies Config;

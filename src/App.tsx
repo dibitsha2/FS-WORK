@@ -3,13 +3,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navigation from "./components/Navigation";
+import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import AboutSection from "./components/AboutSection";
-import ServicesSection from "./components/ServicesSection";
+import ServicesSection from "./components/Services";
 import ProjectsSection from "./components/ProjectsSection";
 import ContactSection from "./components/ContactSection";
 import NotFound from "./pages/NotFound";
+import ClientReviews from "./components/ClientReviews";
 
 const queryClient = new QueryClient();
 
@@ -21,12 +22,13 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={
-            <div className="bg-luxury-dark scroll-smooth">
-              <Navigation />
+            <div className="bg-luxury-dark scroll-smooth font-italianno">
+              <Header />
               <HeroSection />
               <AboutSection />
               <ServicesSection />
               <ProjectsSection />
+              <ClientReviews />
               <ContactSection />
             </div>
           } />

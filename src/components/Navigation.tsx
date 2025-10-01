@@ -1,10 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
   
   const navItems = [
     { name: "Home", href: "#home" },
@@ -23,10 +21,10 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="absolute top-0 left-0 right-0 z-50 px-6 py-6">
+    <nav className="absolute top-0 left-0 right-0 z-[99] px-6 py-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center">
-          <img src="/logo.jpg" alt="Logo" className="w-[190px] shadow-luxury h-[60px] rounded-2xl object-cover" />
+          <img src="/logo.jpg" alt="Logo" className="w-[160px] h-auto object-contain mix-blend-multiply" style={{ clipPath: 'inset(0 0 25% 0 round 16px)' }} />
         </div>
         
         <div className="hidden md:flex items-center space-x-8">
@@ -34,17 +32,16 @@ const Navigation = () => {
             <button
               key={item.name}
               onClick={() => scrollToSection(item.href)}
-              className="text-luxury-text hover:text-luxury-gold transition-all duration-300 text-sm font-light tracking-wide relative group"
+              className="text-luxury-text hover:text-luxury-gold transition-all duration-300 text-sm font-light tracking-wide relative group font-algerian"
             >
               {item.name}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-luxury-gold transition-all duration-300 group-hover:w-full"></span>
             </button>
           ))}
+          <Button variant="luxury-outline" size="sm" className="font-algerian">
+            Get Quote
+          </Button>
         </div>
-
-        <Button variant="luxury-outline" size="sm" className="hidden md:block">
-          Get Quote
-        </Button>
 
         {/* Mobile menu button */}
         <button 
@@ -70,13 +67,13 @@ const Navigation = () => {
               <button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left text-luxury-text hover:text-luxury-gold transition-colors duration-300 text-sm font-light tracking-wide py-2"
+                className="block w-full text-left text-luxury-text hover:text-luxury-gold transition-colors duration-300 text-sm font-light tracking-wide py-2 font-algerian"
               >
                 {item.name}
               </button>
             ))}
             <div className="pt-4 border-t border-luxury-gold/20">
-              <Button variant="luxury-outline" size="sm" className="w-full">
+              <Button variant="luxury-outline" size="sm" className="w-full font-algerian">
                 Get Quote
               </Button>
             </div>

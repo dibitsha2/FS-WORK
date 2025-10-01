@@ -1,15 +1,15 @@
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-architecture.jpg";
-import "@fontsource/cinzel";
+import "@fontsource/italianno"; // defaults to weight 400
 
 const HeroSection = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center pt-24 font-italianno"
     >
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-0">
         <img
           src={heroImage}
           alt="Modern luxury architecture"
@@ -19,7 +19,7 @@ const HeroSection = () => {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
+      <div className="relative text-center max-w-4xl mx-auto px-6">
         {/* Subtitle */}
         <div className="mb-4">
           <span className="inline-flex items-center text-luxury-gold text-sm font-light tracking-widest uppercase">
@@ -34,18 +34,19 @@ const HeroSection = () => {
         <div className="mb-6">
           <h1
             className="text-6xl md:text-8xl font-light text-luxury-gold mb-2"
-            style={{ fontFamily: "'Cinzel', serif" }}
           >
             Luxury & Comfort
           </h1>
 
-          <h2 className="text-4xl md:text-6xl font-light text-luxury-text tracking-widest uppercase" style={{ fontFamily: "'Cinzel', serif" }}>
-            Passionate Living Spaces |
+          <h2
+            className="text-2xl md:text-4xl font-light text-luxury-text tracking-widest uppercase"
+          >
+            Passionate Living Spaces
           </h2>
         </div>
 
         {/* Description */}
-        <p className="text-luxury-text-muted text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed">
+        <p className="text-luxury-text-muted text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light leading-relaxed font-lucida-calligraphy">
           We are committed to incorporating sustainable design strategies into
           all of our projects. It is woven into our design practices.
         </p>
@@ -87,7 +88,7 @@ const HeroSection = () => {
           >
             <svg width="16" height="16" viewBox="0 0 16 16" className="mr-2">
               <path
-                d="M8 1l2.5 5 5.5.5-4 4 1 5.5L8 13l-5 2.5 1-5.5-4-4 5.5-.5L8 1z"
+                d="M8 1l2.5 5 5.5-.5-4 4 1 5.5L8 13l-5 2.5 1-5.5-4-4 5.5-.5L8 1z"
                 fill="currentColor"
               />
             </svg>
